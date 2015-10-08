@@ -1,4 +1,4 @@
-<div class="col-sm-10 gridster">
+<div class="col-sm-10 draggable">
 	@foreach($currentBlocks as $block)
 		@include('blocks.' . $block->type . '-edit', ['block' => $block])
 	@endforeach

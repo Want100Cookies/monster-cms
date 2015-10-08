@@ -1,14 +1,16 @@
-<script type="text/javascript" src="/js/jquery.gridster.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui.min.js"></script>
 
 <script type="text/javascript">
 	$(function(){ //DOM Ready
-
-		$(".gridster").gridster({
-	        widget_base_dimensions: [100, 55],
-            widget_margins: [5, 5],
-	        min_cols: 12,
-	        max_cols: 12,
-	        widget_selector: 'div.block'
-	    });
+		var width = $('.draggable').width() / 12;
+		$('.block').draggable({
+			grid: [width, 1],
+		});
+		
 	});
 </script>
+{{-- var widgets = [
+	    	@foreach($currentBlocks as $block)
+				['@include('blocks.' . $block->type . '-edit', ['block' => $block])', {{ classToWith($block->class, 'md')}}, 1],
+			@endforeach
+	    ] --}}
