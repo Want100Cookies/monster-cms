@@ -27,4 +27,12 @@ class Block extends Model
     {
     	return $this->belongsTo('App\Page');
     }
+
+    /**
+     * Get the serialized content
+     */
+    public function getContentAttribute($value)
+    {
+        return json_decode($value);
+    }
 }

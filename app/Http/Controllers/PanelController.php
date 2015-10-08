@@ -33,7 +33,20 @@ class PanelController extends Controller
      */
     public function create()
     {
-        return view('panel.page.create');
+        return view('panel.page.create', ['availableBlocks' => $this->getBlockList(), 'currentBlocks' => array()]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  string  $slug
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($slug)
+    {
+        $page = Page::where('slug', $slug)->firstOrFail();
+
+        return view('panel.page.create', ['availableBlocks' => $this->getBlockList(), 'currentBlocks' => $page->blocks, 'page' => $page]);
     }
 
     /**
@@ -43,28 +56,6 @@ class PanelController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
     {
         //
     }
@@ -91,4 +82,38 @@ class PanelController extends Controller
     {
         //
     }
+
+    /**
+     * Get a list with all available blocks
+     *
+     * @return Array strings
+     */
+    private function getBlockList() // TODO: make path variable in config file
+    {
+        $full_path = base_path('resources\views\blocks');
+
+        if(!is_dir($full_path))
+            return 'Blocks directory not found';
+
+        $files = scandir($full_path);
+        unset($files[0]);
+        unset($files[1]);
+
+
+
+        foreach($files as $key => $file)
+        {
+            if (strpos($file, 'edit') !== false)
+            {
+                unset($files[$key]);
+            }
+            else
+            {
+                $files[$key] = str_replace('.blade.php', '', $file);
+            }
+        }
+
+        return $files;
+    }
+
 }

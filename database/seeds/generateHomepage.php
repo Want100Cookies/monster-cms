@@ -31,7 +31,7 @@ class generateHomepage extends Seeder
 
         $block->slug = 'html_block';
         $block->type = 'html';
-        $block->content = json_encode(array('content' => '<b>Bold html block</b>'));
+        $block->content = json_encode(array('html' => '<b>Bold html block</b>'));
         $block->class = 'col-md-2';
         $block->enabled = true;
         $block->page_id = $page->id;

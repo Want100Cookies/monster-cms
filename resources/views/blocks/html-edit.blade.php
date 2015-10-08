@@ -1,4 +1,4 @@
 <div class="{{ $block->class }}">
-	<b>This is an html block</b>
+<pre>Edit</pre>
 	{!! $block->content->html !!}
 </div>

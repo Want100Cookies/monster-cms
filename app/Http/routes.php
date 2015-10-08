@@ -16,6 +16,7 @@ Route::controller('password', 'Auth\PasswordController');
 
 Route::get('/panel', 'PanelController@index');
 Route::get('/panel/page/create', 'PanelController@create');
+Route::get('/panel/page/{slug}/edit', 'PanelController@edit');
 
 Route::any('/', 'PageController@show');
 Route::any('{slug}', 'PageController@show')->where('slug', '[a-z0-9-]+');
