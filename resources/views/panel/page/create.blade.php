@@ -1,9 +1,5 @@
 @extends('app')
 
-@section('header')
-	<link rel="stylesheet" type="text/css" href="/css/jquery.gridster.css">
-@stop
-
 @section('content')
 
 	<div class="row">
@@ -19,23 +15,11 @@
 	<br>
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-			<form class="form-horizontal">
+			<form class="form-horizontal" method="post" action="{{ action("PanelController@store") }}">
 				@include('panel.page.form')
 			</form>
+			<p class="col-sm-offset-2">After saving you can define the layout.</p>
 		</div>
 	</div>
 
-	<hr>
-
-	<div class="row">
-		<div class="col-sm-12">
-			<h2>Define the layout</h2>
-		</div>
-		@include('panel.page.layout-builder')
-	</div>
-
-@stop
-
-@section('footer')
-	@include('panel.page.layout-builder-js')
 @stop

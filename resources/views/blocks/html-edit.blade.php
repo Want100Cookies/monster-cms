@@ -1,1 +1,1 @@
-<div class="{{ $block->class }} block" {{-- data-sizex="2" data-sizey="2" --}}>!!{!! $block->content->html !!}!!</div>
+<div class="editable block" data-id="{{ $block->id }}"><a href="#">Click to edit {{ $block->slug }}</a></div>

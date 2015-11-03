@@ -1,3 +1,4 @@
+<input type="hidden" name="_token" value="{{ csrf_token() }}">
 <div class="form-group">
 	<label for="name" class="col-sm-2 control-label">Page title</label>
 	<div class="col-sm-10">
@@ -15,12 +16,12 @@
 	<div class="col-sm-10">
 		<div class="radio">
 			<label>
-				<input type="radio" name="enabled" id="enabled" value="true" {{ isset($page) ? ($page->enabled ? 'checked' : '') : 'checked' }}>
+				<input type="radio" name="enabled" id="enabled" value="1" {{ isset($page) ? ($page->enabled ? 'checked' : '') : 'checked' }}>
 				Yes
 			</label>
 			&nbsp;&nbsp;
 			<label>
-				<input type="radio" name="enabled" id="enabled" value="false" {{ isset($page) ? (!$page->enabled ? 'checked' : '') : '' }}>
+				<input type="radio" name="enabled" id="enabled" value="0" {{ isset($page) ? (!$page->enabled ? 'checked' : '') : '' }}>
 				No
 			</label>
 		</div>

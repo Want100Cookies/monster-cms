@@ -18,7 +18,7 @@ class Page extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'enabled'];
+    protected $fillable = ['name', 'slug', 'user_id', 'enabled'];
 
     /**
      * Get the blocks belonging to the current page

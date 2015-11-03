@@ -15,7 +15,11 @@ Route::controller('auth', 'Auth\AuthController');
 Route::controller('password', 'Auth\PasswordController');
 
 Route::get('/panel', 'PanelController@index');
+
 Route::get('/panel/page/create', 'PanelController@create');
+Route::post('/panel/page/create', 'PanelController@store');
+Route::post('/panel/block/create', 'PanelController@storeBlock');
+
 Route::get('/panel/page/{slug}/edit', 'PanelController@edit');
 
 Route::any('/', 'PageController@show');

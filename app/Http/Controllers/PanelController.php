@@ -13,9 +13,16 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Page;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 
 class PanelController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth");
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -46,18 +53,48 @@ class PanelController extends Controller
     {
         $page = Page::where('slug', $slug)->firstOrFail();
 
-        return view('panel.page.create', ['availableBlocks' => $this->getBlockList(), 'currentBlocks' => $page->blocks, 'page' => $page]);
+        return view('panel.page.edit', ['availableBlocks' => $this->getBlockList(), 'currentBlocks' => $page->blocks, 'page' => $page]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created page in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            "name" => "required",
+            "slug" => "required|unique:page",
+            "enabled" => "required|accepted"
+        ]);
+
+        $input = $request->input();
+        $input["user_id"] = $request->user()->id;
+
+        Page::create($input);
+
+        return redirect()->action("PanelController@edit", $input["slug"]);
+    }
+
+    /**
+     * Store a newly created block in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeBlock(Request $request)
+    {
+        // Todo: # # # # # # # # # # # # # # #
+        // Todo: Store blocks in the database
+        // Todo: Edit page form
+        // Todo: Edit existing blocks
+        // Todo: Reset password
+        // Todo: Change block order
+        // Todo: # # # # # # # # # # # # # # #
+
+        return $request->input();
     }
 
     /**
