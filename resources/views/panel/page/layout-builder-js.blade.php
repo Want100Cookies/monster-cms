@@ -30,9 +30,11 @@
 
             data.slug = data.content["slug"];
             data.enabled = data.content["enabled"];
+            data.class = data.content["class"];
 
             delete data.content["slug"];
-            delete data.content["enabled"]
+            delete data.content["enabled"];
+            delete data.content["class"];
 
 
             $.ajax({
@@ -46,6 +48,7 @@
                 error: function (e) {
                     console.log("AJAX::error");
                     console.log(e);
+                    $("html").html(e.responseText);
                 }
             });
 
@@ -70,6 +73,12 @@
                                                 + '<label for="slug" class="col-sm-2 control-label">Slug</label>'
                                                 + '<div class="col-sm-10">'
                                                     + '<input type="text" class="form-control" id="slug" name="slug">'
+                                                + '</div>'
+                                            + '</div>'
+                                            + '<div class="form-group">'
+                                                + '<label for="class" class="col-sm-2 control-label">Class</label>'
+                                                + '<div class="col-sm-10">'
+                                                    + '<input type="text" class="form-control" id="class" name="class">'
                                                 + '</div>'
                                             + '</div>'
                                             + '<div class="form-group">'

@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Block;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -86,15 +87,17 @@ class PanelController extends Controller
      */
     public function storeBlock(Request $request)
     {
-        // Todo: # # # # # # # # # # # # # # #
-        // Todo: Store blocks in the database
-        // Todo: Edit page form
-        // Todo: Edit existing blocks
-        // Todo: Reset password
-        // Todo: Change block order
-        // Todo: # # # # # # # # # # # # # # #
+        $this->validate($request, [
+            "content" => "required",
+            "enabled" => "required|accepted",
+            "page_id" => "required", // Todo: valid foreign key
+            "slug" => "required", // Todo: unique for current page
+            "type" => "required"
+        ]);
 
-        return $request->input();
+        $instance = Block::create($request->input());
+        dd($instance);
+        return "true";;
     }
 
     /**

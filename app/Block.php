@@ -18,7 +18,7 @@ class Block extends Model
      *
      * @var array
      */
-    protected $fillable = ['type', 'slug', 'content', 'enabled'];
+    protected $fillable = ['type', 'slug', 'content', 'enabled', 'page_id'];
 
     /**
      * Get the page that owns the block
@@ -34,5 +34,13 @@ class Block extends Model
     public function getContentAttribute($value)
     {
         return json_decode($value);
+    }
+
+    /**
+     * Set the encoded content
+     */
+    public function setContentAttribute($value)
+    {
+        $this->attributes["content"] = json_encode($value);
     }
 }
