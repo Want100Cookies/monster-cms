@@ -27,13 +27,13 @@ class generateHomepage extends Seeder
 
         $page->save();
 
-        for ($i=0; $i < 12; $i++) { 
+        for ($i=0; $i < 3; $i++) {
         	$block = new Block;
 
 	        $block->slug = 'html_block' . $i;
 	        $block->type = 'html';
-	        $block->content = json_encode(array('html' => '<b>Bold ' . $i . ' block</b>'));
-	        $block->class = 'col-md-1';
+	        $block->content = array('html' => '<b>Bold ' . $i . ' block</b>');
+	        $block->class = 'col-md-4';
 	        $block->enabled = true;
 	        $block->page_id = $page->id;
 

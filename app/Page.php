@@ -27,4 +27,12 @@ class Page extends Model
     {
     	return $this->hasMany('App\Block');
     }
+
+    /**
+     * Get only enabled blocks
+     */
+    public function enabledBlocks()
+    {
+        return $this->hasMany('App\Block')->enabled();
+    }
 }

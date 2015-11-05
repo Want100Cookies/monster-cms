@@ -31,7 +31,7 @@ class CreatePageAndBlockTable extends Migration
             $table->string('slug')->unique();
             $table->string('type');
             $table->json('content');
-            $table->string('class');
+            $table->string('class')->nullable();
             $table->boolean('enabled');
 
             $table->integer('page_id')->unsigned();

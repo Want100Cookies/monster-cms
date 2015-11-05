@@ -18,9 +18,13 @@ Route::get('/panel', 'PanelController@index');
 
 Route::get('/panel/page/create', 'PanelController@create');
 Route::post('/panel/page/create', 'PanelController@store');
+
 Route::post('/panel/block/create', 'PanelController@storeBlock');
+Route::post('/panel/block/update', 'PanelController@updateBlock');
+Route::post('/panel/block/get', 'PanelController@getBlock');
 
 Route::get('/panel/page/{slug}/edit', 'PanelController@edit');
+Route::post('/panel/page/{slug}/update', 'PanelController@update');
 
 Route::any('/', 'PageController@show');
 Route::any('{slug}', 'PageController@show')->where('slug', '[a-z0-9-]+');

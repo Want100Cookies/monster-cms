@@ -1,6 +1,11 @@
 <div class="col-sm-10 current-blocks">
 	@foreach($currentBlocks as $block)
-		@include('blocks.' . $block->type . '-edit', ['block' => $block])
+		<div class="editable block" data-id="{{ $block->id }}" data-type="{{ $block->type }}">
+			@include('blocks.' . $block->type . '-edit', ['block' => $block])
+			<!--
+			@include('blocks.' . $block->type . '-editor')
+			-->
+		</div>
 	@endforeach
 </div>
 <div class="col-sm-2 available-blocks">

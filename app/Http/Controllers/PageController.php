@@ -20,6 +20,6 @@ class PageController extends Controller
     {
         $page = Page::where('slug', $slug)->firstOrFail();
 
-        return view('welcome', ['page' => $page]);
+        return view('page', ['page' => $page, 'currentSlug' => $slug]);
     }
 }

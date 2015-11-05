@@ -41,7 +41,7 @@ class PanelController extends Controller
      */
     public function create()
     {
-        return view('panel.page.create', ['availableBlocks' => $this->getBlockList(), 'currentBlocks' => array()]);
+        return view('panel.page.create');
     }
 
     /**
@@ -95,19 +95,54 @@ class PanelController extends Controller
             "type" => "required"
         ]);
 
-        $instance = Block::create($request->input());
-        dd($instance);
-        return "true";;
+        Block::create($request->input());
+
+        return "true";
+    }
+
+    /**
+     * Get a single block's content
+     *
+     * @param   \Illuminate\Http\Request    $request
+     * @return  \Illuminate\Http\Response
+     */
+    public function getBlock(Request $request)
+    {
+        $block = Block::findOrFail($request->input("blockId"));
+
+        return $block;
+    }
+
+    /**
+     * Update an block
+     *
+     * @param   \Illuminate\Http\Request    $request
+     * @return  \Illuminate\Http\Response
+     */
+    public function updateBlock(Request $request)
+    {
+        //Todo: Validate request
+
+        $input = $request->input();
+
+        $input["content"] = json_encode($input["content"]);
+        unset($input["id"]);
+        unset($input["_token"]);
+
+        $block = Block::where('id', $request->input('id'))
+            ->update($input);
+
+        return $block;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  string  $slug
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
         //
     }

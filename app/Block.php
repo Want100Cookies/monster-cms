@@ -18,7 +18,7 @@ class Block extends Model
      *
      * @var array
      */
-    protected $fillable = ['type', 'slug', 'content', 'enabled', 'page_id'];
+    protected $fillable = ['type', 'slug', 'class', 'content', 'enabled', 'page_id'];
 
     /**
      * Get the page that owns the block
@@ -41,6 +41,11 @@ class Block extends Model
      */
     public function setContentAttribute($value)
     {
-        $this->attributes["content"] = json_encode($value);
+        $this->attributes['content'] = json_encode($value);
+    }
+
+    public function scopeEnabled($query)
+    {
+        return $query->where('enabled', 1);
     }
 }

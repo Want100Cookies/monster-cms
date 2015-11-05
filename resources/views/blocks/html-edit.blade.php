@@ -1,1 +1,1 @@
-<div class="editable block" data-id="{{ $block->id }}"><a href="#">Click to edit {{ $block->slug }}</a></div>
+<a href="#">Click to edit {{ $block->slug }}</a>
