@@ -1,14 +1,10 @@
-## Laravel PHP Framework
+## Monster CMS
+##### _WORK IN PROGRESS_
+###### Build with Laravel
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
 [![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
-
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+Monster CMS is a CMS system based on Laravel. It's purpose is to provide a simple cms for simple one page website's. It's very easy to extend using blocks and the blade template syntax. Feel free to fork and contribute to the project
 
 ## Official Documentation
 
@@ -20,8 +16,8 @@ Thank you for considering contributing to the Laravel framework! The contributio
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within Monster CMS, please send an e-mail to Pascal Drewes at pascal@drewes-webdesign.nl. All security vulnerabilities will be promptly addressed.
 
 ### License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+The Laravel framework and the Monster CMS is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
