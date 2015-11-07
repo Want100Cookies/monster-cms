@@ -11,20 +11,21 @@
 |
 */
 
-Route::controller('auth', 'Auth\AuthController');
-Route::controller('password', 'Auth\PasswordController');
+Route::controller(  'auth',                     'Auth\AuthController');
+Route::controller(  'password',                 'Auth\PasswordController');
 
-Route::get('/panel', 'PanelController@index');
+Route::get(         '/panel',                   'PanelController@index');
 
-Route::get('/panel/page/create', 'PanelController@create');
-Route::post('/panel/page/create', 'PanelController@store');
+Route::get(         '/panel/page/create',       'PanelController@create');
+Route::post(        '/panel/page/create',       'PanelController@store');
 
-Route::post('/panel/block/create', 'PanelController@storeBlock');
-Route::post('/panel/block/update', 'PanelController@updateBlock');
-Route::post('/panel/block/get', 'PanelController@getBlock');
+Route::post(        '/panel/block/create',      'PanelController@storeBlock');
+Route::post(        '/panel/block/update',      'PanelController@updateBlock');
+Route::post(        '/panel/block/get',         'PanelController@getBlock');
+Route::post(        '/panel/block/destroy',     'PanelController@destroyBlock');
 
-Route::get('/panel/page/{slug}/edit', 'PanelController@edit');
-Route::post('/panel/page/{slug}/update', 'PanelController@update');
+Route::get(         '/panel/page/{slug}/edit',      'PanelController@edit');
+Route::post(        '/panel/page/{slug}/update',    'PanelController@update');
 
-Route::any('/', 'PageController@show');
-Route::any('{slug}', 'PageController@show')->where('slug', '[a-z0-9-]+');
+Route::any(         '/',                        'PageController@show');
+Route::any(         '{slug}',                   'PageController@show')->where('slug', '[a-z0-9-]+');

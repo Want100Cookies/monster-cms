@@ -1,6 +1,10 @@
 <script src="/js/jquery.comments.js" type="text/javascript"></script>
+<script src="/js/MyToJson.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+    //Todo: auto-generate slug
+    //Todo: build re-order functionality
+
     // Define global variable block for loading content in editor forms
     // Define global variable emptyBlock, for when no content has to be loaded, but no nullReferenceExceptions should be thrown (I know, java reference)
     var emptyBlock = {
@@ -15,10 +19,32 @@
 
     $(function(){ //DOM Ready
 
+        $(".current-blocks").on("click", ".delete", function () {
+            if (!window.confirm("Are you sure you want to delete this block? \r\n(this delete is permanent!!!)")) return false;
 
-        // Open modal to edit a block
-		$(".current-blocks").on("click", ".editable", function () {
-			var blockId = $(this).data("id");
+            var block = $(this).parent().parent();
+            var blockId = block.data("id");
+
+            $.ajax({
+                url: "{{ action("PanelController@destroyBlock") }}",
+                type: "POST",
+                data: {id: blockId, _token: "{{ csrf_token() }}"},
+                success: function (data) {
+                    console.log("AJAX::success");
+                    console.log(data);
+                    block.parent().remove();
+                },
+                error: function (e) {
+                    console.log("AJAX::error");
+                    console.log(e);
+                    $("html").html(e.responseText);
+                }
+            });
+
+            return false;
+
+        }).on("click", ".editable", function () {        // Open modal to edit a block
+            var blockId = $(this).data("id");
             var blockType = $(this).data("type");
             var editor = $(this).comments().html();
 
@@ -63,8 +89,6 @@
                 content: $(this).MytoJson(),
                 _token: "{{ csrf_token() }}",
                 type: $("#createBlock").data("type"),
-                slug: $('#createBlock input[name="slug"]').val(),
-                enabled: $('#createBlock input[name="enabled"]').val(),
                 page_id: $('.edit input[name="id"]').val()
             };
 
@@ -86,7 +110,8 @@
                 success: function (data) {
                     console.log("AJAX::Success");
                     console.log(data);
-                    location.reload();
+                    $(".current-blocks").append(data);
+                    //location.reload();
                 },
                 error: function (e) {
                     console.log("AJAX::error");
@@ -97,14 +122,14 @@
 
             $("#createBlock").modal("hide");
             return false;
+
         }).on('submit', '#editBlock form', function() {         // Submit the edit block form
             // Gather data
             var data = {
                 id: $("#editBlock").data("id"),
                 content: $(this).MytoJson(),
                 _token: "{{ csrf_token() }}",
-                slug: $('#editBlock input[name="slug"]').val(),
-                enabled: $('#editBlock input[name="enabled"]').val(),
+                page_id: $('.edit input[name="id"]').val()
             };
 
             // Move data one level up
@@ -122,10 +147,10 @@
                 url: '{{ action("PanelController@updateBlock") }}',
                 type: 'POST',
                 data: data,
-                success: function (data) {
+                success: function (response) {
                     console.log("AJAX::Success");
-                    console.log(data);
-                    //location.reload();
+                    console.log(response);
+                    $(".editable[data-id='" + data.id + "']").parent().replaceWith(response);
                 },
                 error: function (e) {
                     console.log("AJAX::error");
@@ -215,72 +240,4 @@
         $('#' + id).modal();
     }
 
-    //Todo: Set this to separate .js file
-    jQuery.fn.MytoJson = function(options) {
-
-        options = jQuery.extend({}, options);
-
-        var self = this,
-                json = {},
-                push_counters = {},
-                patterns = {
-                    "validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
-                    "key":      /[a-zA-Z0-9_]+|(?=\[\])/g,
-                    "push":     /^$/,
-                    "fixed":    /^\d+$/,
-                    "named":    /^[a-zA-Z0-9_]+$/
-                };
-
-
-        this.build = function(base, key, value){
-            base[key] = value;
-            return base;
-        };
-
-        this.push_counter = function(key){
-            if(push_counters[key] === undefined){
-                push_counters[key] = 0;
-            }
-            return push_counters[key]++;
-        };
-
-        jQuery.each(jQuery(this).serializeArray(), function(){
-
-            // skip invalid keys
-            if(!patterns.validate.test(this.name)){
-                return;
-            }
-
-            var k,
-                    keys = this.name.match(patterns.key),
-                    merge = this.value,
-                    reverse_key = this.name;
-
-            while((k = keys.pop()) !== undefined){
-
-                // adjust reverse_key
-                reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
-
-                // push
-                if(k.match(patterns.push)){
-                    merge = self.build([], self.push_counter(reverse_key), merge);
-                }
-
-                // fixed
-                else if(k.match(patterns.fixed)){
-                    merge = self.build([], k, merge);
-                }
-
-                // named
-                else if(k.match(patterns.named)){
-                    merge = self.build({}, k, merge);
-                }
-            }
-
-            json = jQuery.extend(true, json, merge);
-        });
-
-
-        return json;
-    }
 </script>

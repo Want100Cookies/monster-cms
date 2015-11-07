@@ -89,15 +89,15 @@ class PanelController extends Controller
     {
         $this->validate($request, [
             "content" => "required",
-            "enabled" => "required|accepted",
-            "page_id" => "required", // Todo: valid foreign key
-            "slug" => "required", // Todo: unique for current page
+            "enabled" => "required|boolean",
+            "page_id" => "required|exists:page,id",
+            "slug" => "required|unique:block,slug,NULL,id,page_id," . $request->input("page_id"),
             "type" => "required"
         ]);
 
-        Block::create($request->input());
+        $block = Block::create($request->input());
 
-        return "true";
+        return view("panel.page.blockEdit", ["block" => $block]);
     }
 
     /**
@@ -116,23 +116,47 @@ class PanelController extends Controller
     /**
      * Update an block
      *
-     * @param   \Illuminate\Http\Request    $request
+     * @param  \Illuminate\Http\Request     $request
      * @return  \Illuminate\Http\Response
      */
     public function updateBlock(Request $request)
     {
-        //Todo: Validate request
+        $this->validate($request, [
+            "id" => "required|exists:block,id",
+            "content" => "required",
+            "slug" => "required|unique:block,slug," . $request->input("id") . ",id,page_id," . $request->input("page_id"),
+            "enabled" => "required|boolean",
+            "class" => "required"
+        ]);
 
         $input = $request->input();
 
         $input["content"] = json_encode($input["content"]);
         unset($input["id"]);
         unset($input["_token"]);
+        unset($input["page_id"]);
 
         $block = Block::where('id', $request->input('id'))
             ->update($input);
 
-        return $block;
+        return view("panel.page.blockEdit", ["block" => Block::find($request->input("id"))]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param   \Illuminate\Http\Request    $request
+     * @return  \Illuminate\Http\Response
+     */
+    public function destroyBlock(Request $request)
+    {
+        $this->validate($request, [
+           "id" => "required|exists:block,id"
+        ]);
+
+        Block::destroy($request->input("id"));
+
+        return "true";
     }
 
     /**
@@ -144,7 +168,7 @@ class PanelController extends Controller
      */
     public function update(Request $request, $slug)
     {
-        //
+        //Todo: JS to send form and process data here
     }
 
     /**
@@ -155,7 +179,7 @@ class PanelController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //Todo: Delete page code
     }
 
     /**
