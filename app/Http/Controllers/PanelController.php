@@ -16,6 +16,7 @@ use App\Http\Controllers\Controller;
 use App\Page;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use \Flash;
 
 class PanelController extends Controller
 {
@@ -79,6 +80,11 @@ class PanelController extends Controller
         return redirect()->action("PanelController@edit", $input["slug"]);
     }
 
+    public function createBlock($pageId, $blockType)
+    {
+        return view("panel.block.create", ["pageId" => $pageId, "type" => $blockType]);
+    }
+
     /**
      * Store a newly created block in storage.
      *
@@ -89,15 +95,21 @@ class PanelController extends Controller
     {
         $this->validate($request, [
             "content" => "required",
-            "enabled" => "required|boolean",
             "page_id" => "required|exists:page,id",
             "slug" => "required|unique:block,slug,NULL,id,page_id," . $request->input("page_id"),
             "type" => "required"
         ]);
 
+        $input = $request->input();
+        $input['enabled'] = 1;
+
         $block = Block::create($request->input());
 
-        return view("panel.page.blockEdit", ["block" => $block]);
+        $page_slug = Page::findOrFail($request->input("page_id"))->pluck("slug");
+        
+        Flash::success("Block created!");
+
+        return redirect()->action("PanelController@edit", ["slug" => $page_slug]);
     }
 
     /**
@@ -113,6 +125,13 @@ class PanelController extends Controller
         return $block;
     }
 
+    public function editBlock($blockId)
+    {
+        $block = Block::findOrFail($blockId);
+
+        return view("panel.block.edit", ["block" => $block]);
+    }
+
     /**
      * Update an block
      *
@@ -126,20 +145,23 @@ class PanelController extends Controller
             "content" => "required",
             "slug" => "required|unique:block,slug," . $request->input("id") . ",id,page_id," . $request->input("page_id"),
             "enabled" => "required|boolean",
-            "class" => "required"
         ]);
 
         $input = $request->input();
 
-        $input["content"] = json_encode($input["content"]);
         unset($input["id"]);
         unset($input["_token"]);
         unset($input["page_id"]);
 
-        $block = Block::where('id', $request->input('id'))
-            ->update($input);
+        $block = Block::findOrFail($request->input('id'));
 
-        return view("panel.page.blockEdit", ["block" => Block::find($request->input("id"))]);
+        $block->update($input);
+
+        $page_slug = Page::findOrFail($block->page_id)->pluck("slug");
+
+        Flash::success("Block updated!");
+
+        return redirect()->action("PanelController@edit", ["slug" => $page_slug]);
     }
 
     /**

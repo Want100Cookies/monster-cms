@@ -1,1 +1,0 @@
-<a href="#">Click to edit {{ $block->slug }}</a>

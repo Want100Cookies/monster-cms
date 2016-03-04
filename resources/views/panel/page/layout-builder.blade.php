@@ -8,11 +8,8 @@
 	@foreach($availableBlocks as $block)
 		<div class="panel panel-default block" data-type="{{ $block }}">
 			<div class="panel-body">
-				<a href="#">{{ $block }}</a>
+				<a href="{{ action("PanelController@createBlock", ['pageId' => $page->id, 'blockType' => $block]) }}">{{ $block }}</a>
 			</div>
-			<!--
-			@include('blocks.' . $block . '-editor')
-			-->
 		</div>
 	@endforeach
 </div>
