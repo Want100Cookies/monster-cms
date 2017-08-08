@@ -21,15 +21,15 @@ class Page extends Model
     protected $fillable = ['name', 'slug', 'user_id', 'enabled'];
 
     /**
-     * Get the blocks belonging to the current page
+     * Get the blocks belonging to the current page.
      */
     public function blocks()
     {
-    	return $this->hasMany('App\Block');
+        return $this->hasMany('App\Block');
     }
 
     /**
-     * Get only enabled blocks
+     * Get only enabled blocks.
      */
     public function enabledBlocks()
     {

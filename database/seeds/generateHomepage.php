@@ -1,10 +1,8 @@
 <?php
 
-use Illuminate\Database\Seeder;
-
 use App\Page;
 use App\Block;
-
+use Illuminate\Database\Seeder;
 
 class generateHomepage extends Seeder
 {
@@ -15,8 +13,8 @@ class generateHomepage extends Seeder
      */
     public function run()
     {
-    	DB::table('page')->delete();
-    	DB::table('block')->delete();
+        DB::table('page')->delete();
+        DB::table('block')->delete();
 
         $page = new Page;
 
@@ -27,18 +25,17 @@ class generateHomepage extends Seeder
 
         $page->save();
 
-        for ($i=0; $i < 3; $i++) {
-        	$block = new Block;
+        for ($i = 0; $i < 3; $i++) {
+            $block = new Block;
 
-	        $block->slug = 'html_block' . $i;
-	        $block->type = 'html';
-	        $block->content = array('html' => '<b>Bold ' . $i . ' block</b>');
-	        $block->class = 'col-md-4';
-	        $block->enabled = true;
-	        $block->page_id = $page->id;
+            $block->slug = 'html_block'.$i;
+            $block->type = 'html';
+            $block->content = ['html' => '<b>Bold '.$i.' block</b>'];
+            $block->class = 'col-md-4';
+            $block->enabled = true;
+            $block->page_id = $page->id;
 
-	        $block->save();
+            $block->save();
         }
-
     }
 }

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Validator;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -26,7 +26,6 @@ class AuthController extends Controller
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
     protected $redirectPath = '/';
-    
 
     /**
      * Create a new authentication controller instance.
@@ -131,7 +130,7 @@ class AuthController extends Controller
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
-                'redirectPath' => $this->redirectPath()
+                'redirectPath' => $this->redirectPath(),
                 ]);
         }
 
@@ -152,7 +151,7 @@ class AuthController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->messages()->toJson()
+                    'errors' => $validator->messages()->toJson(),
                     ]);
             }
 
@@ -166,7 +165,7 @@ class AuthController extends Controller
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
-                'redirectPath' => $this->redirectPath()
+                'redirectPath' => $this->redirectPath(),
                 ]);
         }
 

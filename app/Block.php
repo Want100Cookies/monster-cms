@@ -21,15 +21,15 @@ class Block extends Model
     protected $fillable = ['type', 'slug', 'class', 'content', 'enabled', 'page_id'];
 
     /**
-     * Get the page that owns the block
+     * Get the page that owns the block.
      */
     public function page()
     {
-    	return $this->belongsTo('App\Page');
+        return $this->belongsTo('App\Page');
     }
 
     /**
-     * Get the serialized content
+     * Get the serialized content.
      */
     public function getContentAttribute($value)
     {
@@ -37,7 +37,7 @@ class Block extends Model
     }
 
     /**
-     * Set the encoded content
+     * Set the encoded content.
      */
     public function setContentAttribute($value)
     {

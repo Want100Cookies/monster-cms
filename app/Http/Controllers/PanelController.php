@@ -2,27 +2,22 @@
 
 /**
  * VIEW A LIST OF VIEW IN A SPECIFIC DIRECTORY:
- * http://laravel-tricks.com/tricks/show-all-available-views
+ * http://laravel-tricks.com/tricks/show-all-available-views.
  */
-
 
 namespace App\Http\Controllers;
 
+use Flash;
+use App\Page;
 use App\Block;
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
-use App\Page;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
-use \Flash;
 
 class PanelController extends Controller
 {
     public function __construct()
     {
-        $this->middleware("auth");
+        $this->middleware('auth');
     }
 
     /**
@@ -67,22 +62,22 @@ class PanelController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "name" => "required",
-            "slug" => "required|unique:page",
-            "enabled" => "required|accepted"
+            'name' => 'required',
+            'slug' => 'required|unique:page',
+            'enabled' => 'required|accepted',
         ]);
 
         $input = $request->input();
-        $input["user_id"] = $request->user()->id;
+        $input['user_id'] = $request->user()->id;
 
         Page::create($input);
 
-        return redirect()->action("PanelController@edit", $input["slug"]);
+        return redirect()->action('PanelController@edit', $input['slug']);
     }
 
     public function createBlock($pageId, $blockType)
     {
-        return view("panel.block.create", ["pageId" => $pageId, "type" => $blockType]);
+        return view('panel.block.create', ['pageId' => $pageId, 'type' => $blockType]);
     }
 
     /**
@@ -94,10 +89,10 @@ class PanelController extends Controller
     public function storeBlock(Request $request)
     {
         $this->validate($request, [
-            "content" => "required",
-            "page_id" => "required|exists:page,id",
-            "slug" => "required|unique:block,slug,NULL,id,page_id," . $request->input("page_id"),
-            "type" => "required"
+            'content' => 'required',
+            'page_id' => 'required|exists:page,id',
+            'slug' => 'required|unique:block,slug,NULL,id,page_id,'.$request->input('page_id'),
+            'type' => 'required',
         ]);
 
         $input = $request->input();
@@ -105,22 +100,22 @@ class PanelController extends Controller
 
         $block = Block::create($request->input());
 
-        $page_slug = Page::findOrFail($request->input("page_id"))->pluck("slug");
-        
-        Flash::success("Block created!");
+        $page_slug = Page::findOrFail($request->input('page_id'))->pluck('slug');
 
-        return redirect()->action("PanelController@edit", ["slug" => $page_slug]);
+        Flash::success('Block created!');
+
+        return redirect()->action('PanelController@edit', ['slug' => $page_slug]);
     }
 
     /**
-     * Get a single block's content
+     * Get a single block's content.
      *
      * @param   \Illuminate\Http\Request    $request
      * @return  \Illuminate\Http\Response
      */
     public function getBlock(Request $request)
     {
-        $block = Block::findOrFail($request->input("blockId"));
+        $block = Block::findOrFail($request->input('blockId'));
 
         return $block;
     }
@@ -129,11 +124,11 @@ class PanelController extends Controller
     {
         $block = Block::findOrFail($blockId);
 
-        return view("panel.block.edit", ["block" => $block]);
+        return view('panel.block.edit', ['block' => $block]);
     }
 
     /**
-     * Update an block
+     * Update an block.
      *
      * @param  \Illuminate\Http\Request     $request
      * @return  \Illuminate\Http\Response
@@ -141,27 +136,27 @@ class PanelController extends Controller
     public function updateBlock(Request $request)
     {
         $this->validate($request, [
-            "id" => "required|exists:block,id",
-            "content" => "required",
-            "slug" => "required|unique:block,slug," . $request->input("id") . ",id,page_id," . $request->input("page_id"),
-            "enabled" => "required|boolean",
+            'id' => 'required|exists:block,id',
+            'content' => 'required',
+            'slug' => 'required|unique:block,slug,'.$request->input('id').',id,page_id,'.$request->input('page_id'),
+            'enabled' => 'required|boolean',
         ]);
 
         $input = $request->input();
 
-        unset($input["id"]);
-        unset($input["_token"]);
-        unset($input["page_id"]);
+        unset($input['id']);
+        unset($input['_token']);
+        unset($input['page_id']);
 
         $block = Block::findOrFail($request->input('id'));
 
         $block->update($input);
 
-        $page_slug = Page::findOrFail($block->page_id)->pluck("slug");
+        $page_slug = Page::findOrFail($block->page_id)->pluck('slug');
 
-        Flash::success("Block updated!");
+        Flash::success('Block updated!');
 
-        return redirect()->action("PanelController@edit", ["slug" => $page_slug]);
+        return redirect()->action('PanelController@edit', ['slug' => $page_slug]);
     }
 
     /**
@@ -173,12 +168,12 @@ class PanelController extends Controller
     public function destroyBlock(Request $request)
     {
         $this->validate($request, [
-           "id" => "required|exists:block,id"
+           'id' => 'required|exists:block,id',
         ]);
 
-        Block::destroy($request->input("id"));
+        Block::destroy($request->input('id'));
 
-        return "true";
+        return 'true';
     }
 
     /**
@@ -205,36 +200,30 @@ class PanelController extends Controller
     }
 
     /**
-     * Get a list with all available blocks
+     * Get a list with all available blocks.
      *
-     * @return Array strings
+     * @return array strings
      */
     private function getBlockList() // TODO: make path variable in config file
     {
         $full_path = base_path('resources\views\blocks');
 
-        if(!is_dir($full_path))
+        if (! is_dir($full_path)) {
             return 'Blocks directory not found';
+        }
 
         $files = scandir($full_path);
         unset($files[0]);
         unset($files[1]);
 
-
-
-        foreach($files as $key => $file)
-        {
-            if (strpos($file, 'edit') !== false)
-            {
+        foreach ($files as $key => $file) {
+            if (strpos($file, 'edit') !== false) {
                 unset($files[$key]);
-            }
-            else
-            {
+            } else {
                 $files[$key] = str_replace('.blade.php', '', $file);
             }
         }
 
         return $files;
     }
-
 }
